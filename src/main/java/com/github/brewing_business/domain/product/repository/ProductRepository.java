@@ -1,4 +1,4 @@
-package com.github.brewing_business.domain.product.Repository;
+package com.github.brewing_business.domain.product.repository;
 
 import com.github.brewing_business.domain.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

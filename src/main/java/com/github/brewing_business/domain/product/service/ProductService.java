@@ -1,6 +1,7 @@
 package com.github.brewing_business.domain.product.service;
 
-import com.github.brewing_business.domain.product.Repository.ProductRepository;
+import com.github.brewing_business.domain.product.dto.ReqProductDto;
+import com.github.brewing_business.domain.product.repository.ProductRepository;
 import com.github.brewing_business.domain.product.dto.ResProductDto;
 import com.github.brewing_business.domain.product.entity.Product;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +25,10 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public void addProduct(ReqProductDto reqProductDto) {
+        Product product = Product.toEntity(reqProductDto);
+
+
+        productRepository.save(product);
+    }
 }

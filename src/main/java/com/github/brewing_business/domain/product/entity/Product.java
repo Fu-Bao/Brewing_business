@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity(name = "product")
 @Getter
 @AllArgsConstructor
@@ -23,6 +25,9 @@ public class Product {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private List<ProductImage> imgURLs;
 
     @Column(name = "price")
     private int price;
