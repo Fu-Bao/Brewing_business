@@ -26,7 +26,7 @@ public class SecurityConfig {
         http
                 // 현재 페이지에서만 프레임을 허용하고 다른 출처의 프레임은 차단, Clickjacking 공격을 방지
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                // csrf 공격 방어
+                // csrf 공격 방어 X
                 .csrf(AbstractHttpConfigurer::disable)
                 // form 로그인 X
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -38,9 +38,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 접근 권한 설정
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("**/v1/**").authenticated() // v1 경로는 인증된 유저 등급 이상 접근 가능
-                        .requestMatchers("**/v2/**").hasAnyRole("admin", "seller") // v2 경로는 판매자 등급 이상 접근 가능
-                        .requestMatchers("**/v3/**").hasRole("admin") // v3 경로는 관리자만 접근 가능
+                        .requestMatchers("/api/v1/**").authenticated() // v1 경로는 인증된 유저 등급 이상 접근 가능
+                        .requestMatchers("/api/v2/**").hasAnyRole("admin", "seller") // v2 경로는 판매자 등급 이상 접근 가능
+                        .requestMatchers("/api/v3/**").hasRole("admin") // v3 경로는 관리자만 접근 가능
                         .anyRequest().permitAll())
 
         ;

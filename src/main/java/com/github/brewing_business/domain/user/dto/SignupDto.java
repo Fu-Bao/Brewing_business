@@ -19,4 +19,8 @@ public class SignupDto {
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,8}$", message = "닉네임은 특수문자를 제외한 4~8글자여야 합니다.")
     private String username;
+
+    private boolean agreePICU;
+
+    private boolean agreePromotion;
 }
