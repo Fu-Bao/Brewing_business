@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("")
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(SignupDto signupDto) {
-        return ResponseEntity.ok("");
+        userService.signup(signupDto);
+        return ResponseEntity.ok("회원가입 성공");
     }
 }
