@@ -12,7 +12,7 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomUserDetail implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private User userEntity;
 

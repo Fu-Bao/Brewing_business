@@ -20,7 +20,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi chatOpenApi() {
         // "/v1/" 경로에 매칭되는 API를 그룹화하여 문서화한다.
-        String[] paths = {"/swagger_v3/"};
+        String[] paths = {"/v1/"};
 
         return GroupedOpenApi.builder()
                 .group("swagger API v3")  // 그룹 이름을 설정한다.

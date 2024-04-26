@@ -58,7 +58,9 @@ public class User {
     }
 
     // refresh token 주입
-    public void initRefreshToken() {}
+    public void initRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
     public static User SignupToEntity(SignupDto signupDto) {
         return User.builder()

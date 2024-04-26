@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ResBusinessDto {
-// 사업자 등록 dto
+    // 사업자 등록 dto
 
 }

@@ -1,6 +1,6 @@
 package com.github.brewing_business.domain.auth.service;
 
-import com.github.brewing_business.domain.auth.entity.CustomUserDetail;
+import com.github.brewing_business.domain.auth.entity.CustomUserDetails;
 import com.github.brewing_business.domain.user.entity.User;
 import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.exception.AppException;
@@ -22,6 +22,6 @@ public class CustomUserDetailService implements UserDetailsService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_ID_UNMATCHED.getMessage(), ErrorCode.USER_ID_DUPLICATED));
 
-        return new CustomUserDetail(user);
+        return new CustomUserDetails(user);
     }
 }

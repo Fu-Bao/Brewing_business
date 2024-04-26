@@ -17,6 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // 회원가입
     @Transactional
     public void signup(SignupDto signupDto) {
         // 유저 name 중복 확인
@@ -32,7 +33,6 @@ public class UserService {
         User user = User.SignupToEntity(signupDto);
 
         user.passwordEncode(bCryptPasswordEncoder);
-
     }
 
     // 사업자 등록
