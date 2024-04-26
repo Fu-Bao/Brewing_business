@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/yangjo")
 @Tag(name = "유저 관련 API", description = "유저 서비스 관련 api 컨트롤러")
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/signup")
-    @Operation(summary = "이메일, 비밀번호, 유저네임으로 회원가입을 처리하는 API 엔드포인트")
+    @Operation(summary = "아이디, 비밀번호, 닉네임으로 회원가입을 처리하는 API")
     public ResponseEntity<?> signup(SignupDto signupDto) {
         userService.signup(signupDto);
         return ResponseEntity.ok("회원가입 성공");
