@@ -31,4 +31,4 @@ springdoc:
     path: '/swagger-ui.html'
     disable-swagger-default-url: true
     doc-expansion: 'none'
-  paths-to-match: '/yangjo/**'
+  paths-to-match: '/**'
