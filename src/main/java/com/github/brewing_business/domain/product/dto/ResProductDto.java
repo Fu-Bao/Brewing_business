@@ -1,7 +1,7 @@
 package com.github.brewing_business.domain.product.dto;
 
 
-import com.github.brewing_business.domain.product.entity.Product;
+import com.github.brewing_business.domain.product.entity.ProductEntity;
 import lombok.*;
 
 @Getter
@@ -15,11 +15,16 @@ public class ResProductDto {
     private int price;
     private int quantity;
     private String category;
-    private Double star_avg;
+    private Double star_rating;
 
-//    public static ResProductDto toResponse(Product productEntity){
-//        return ResProductDto.builder()
-//                .category()
-//                .build();
-//    }
+    public static ResProductDto toResponse(ProductEntity productEntity) {
+        return ResProductDto.builder()
+                .name(productEntity.getName())
+                .description(productEntity.getDescription())
+                .price(productEntity.getPrice())
+                .quantity(productEntity.getQuantity())
+                .category(productEntity.getCategory())
+                .star_rating(productEntity.getStar_rating())
+                .build();
+    }
 }

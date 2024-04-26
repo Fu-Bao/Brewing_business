@@ -1,16 +1,29 @@
 package com.github.brewing_business.domain.product.controller;
 
 
+import com.github.brewing_business.domain.product.dto.ResProductDto;
+import com.github.brewing_business.domain.product.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class ProductController {
-    //메인화면 하단 전체select
-    @GetMapping("v1")
-    public String all() {
+import java.util.List;
 
-        return "dd";
+@RestController
+@RequiredArgsConstructor
+public class ProductController {
+
+    private final ProductService productService;
+
+    //메인화면 하단 전체select
+    @GetMapping("/v12/product/all")
+    @Tag(name = "상품 관련 API", description = "등록된 전체상품 조회")
+    public ResponseEntity<List<ResProductDto>> productAll() {
+        List<ResProductDto> resProductList = productService.getAllProducts();
+        return ResponseEntity.ok().body(resProductList);
     }
 
 
