@@ -1,22 +1,33 @@
 package com.github.brewing_business.global.config;
 
-import com.github.brewing_business.global.filter.LoginFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.brewing_business.domain.auth.handler.LoginFailureHandler;
+import com.github.brewing_business.domain.auth.handler.LoginSuccessHandler;
+import com.github.brewing_business.domain.auth.handler.LogoutSuccessHandler;
+import com.github.brewing_business.domain.auth.service.CustomUserDetailService;
+import com.github.brewing_business.domain.user.repository.UserRepository;
+import com.github.brewing_business.global.filter.CustomUsernamePasswordAuthenticationFilter;
+import com.github.brewing_business.global.filter.JwtAuthenticationFilter;
+import com.github.brewing_business.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import java.util.Collection;
 
@@ -25,31 +36,11 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final AuthenticationConfiguration authenticationConfiguration;
-
-    //AuthenticationManager Bean 등록
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-
-        return configuration.getAuthenticationManager();
-    }
-
-    // BCrypt 암호화 메소드
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public RoleHierarchy roleHierarchy() {
-        // 계층 권한 설정
-        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-
-        hierarchy.setHierarchy("admin > seller\n" +
-                "seller > user");
-
-        return hierarchy;
-    }
+    private final ObjectMapper objectMapper;
+    private final CustomUserDetailService customUserDetailService;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -67,18 +58,77 @@ public class SecurityConfig {
                 .rememberMe(AbstractHttpConfigurer::disable)
                 // 세션 X
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // login 필터 추가
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class)
                 // 접근 권한 설정
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/v1/**").hasAnyRole("user") // v1 경로는 인증된 유저 등급 이상 접근 가능
                         .requestMatchers("/v2/**").hasAnyRole("seller") // v2 경로는 판매자 등급 이상 접근 가능
                         .requestMatchers("/v3/**").hasRole("admin") // v3 경로는 관리자만 접근 가능
                         .anyRequest().permitAll())
+                // 로그아웃 설정
+                .logout((logout) -> logout
+                        .logoutUrl("/logout").permitAll()
+                        .addLogoutHandler(logoutSuccessHandler)
+                        .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()))
+                        .invalidateHttpSession(true)
+                );
 
-        ;
+        http.addFilterAfter(customUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    //AuthenticationManager Bean 등록
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(customUserDetailService);
+
+        return new ProviderManager(provider);
+    }
+
+    // BCrypt 암호화 메소드
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() {
+        CustomUsernamePasswordAuthenticationFilter customUsernamePasswordLoginFilter
+                = new CustomUsernamePasswordAuthenticationFilter(objectMapper);
+        customUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
+        customUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+        customUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
+        return customUsernamePasswordLoginFilter;
+    }
+
+    @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler(jwtService, userRepository);
+    }
+
+    @Bean
+    public LoginFailureHandler loginFailureHandler() {
+        return new LoginFailureHandler();
+    }
+
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        // 계층 권한 설정
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+
+        hierarchy.setHierarchy("admin > seller\n" +
+                "seller > user");
+
+        return hierarchy;
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtService, userRepository);
     }
 
 }
