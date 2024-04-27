@@ -34,6 +34,8 @@ public class UserService {
         User user = User.SignupToEntity(signupDto);
 
         user.passwordEncode(bCryptPasswordEncoder);
+
+        userRepository.save(user);
     }
 
     // 사업자 등록
