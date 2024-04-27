@@ -47,11 +47,11 @@ public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenti
 
         Map<String, String> usernamePasswordMap = objectMapper.readValue(messageBody, Map.class);
 
-        String email = usernamePasswordMap.get(USERNAME_KEY);
+        String id = usernamePasswordMap.get(USERNAME_KEY);
         String password = usernamePasswordMap.get(PASSWORD_KEY);
 
         // principal 과 credentials 전달
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(id, password);
 
         return this.getAuthenticationManager().authenticate(authRequest);
     }

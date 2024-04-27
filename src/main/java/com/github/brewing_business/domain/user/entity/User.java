@@ -47,6 +47,7 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "refresh_token")
     private String refreshToken;
 
     @Column(name = "deleted_at")
@@ -66,6 +67,7 @@ public class User {
         return User.builder()
                 .userId(signupDto.getId())
                 .username(signupDto.getUsername())
+                .password(signupDto.getPassword())
                 .role(Role.USER)
                 .picu(signupDto.isAgreePICU())
                 .promotion(signupDto.isAgreePromotion())
