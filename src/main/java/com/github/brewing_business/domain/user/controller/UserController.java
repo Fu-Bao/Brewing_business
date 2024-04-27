@@ -27,7 +27,7 @@ public class UserController {
         if(bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(ErrorCode.BINDING_RESULT_ERROR.getMessage());
         }
-  
+
         userService.signup(signupDto);
         return ResponseEntity.ok("회원가입 성공");
     }
