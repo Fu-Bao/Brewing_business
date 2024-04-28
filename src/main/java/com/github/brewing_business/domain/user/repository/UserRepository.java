@@ -1,6 +1,7 @@
 package com.github.brewing_business.domain.user.repository;
 
 import com.github.brewing_business.domain.user.dto.SignupDto;
+import com.github.brewing_business.domain.user.entity.Role;
 import com.github.brewing_business.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUserId(String userId);
 
+    
 }

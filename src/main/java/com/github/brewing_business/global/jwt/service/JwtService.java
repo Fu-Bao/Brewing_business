@@ -38,22 +38,24 @@ public class JwtService {
     private String refreshHeader;
 
     /**
-     * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"으로 설정
+     * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "id"으로 설정
      * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)' 형식
      */
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String ID_CLAIM = "id";
+    private static final String ROLE_CLAIM = "role";
     private static final String BEARER = "Bearer ";
     private final UserRepository userRepository;
 
     // AccessToken 생성
-    public String createAccessToken(String id) {
+    public String createAccessToken(String id, String role) {
         Date now = new Date();
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
                 .withClaim(ID_CLAIM, id)
+                .withClaim(ROLE_CLAIM, role)
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
@@ -117,7 +119,7 @@ public class JwtService {
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
                     .build() // 반환된 빌더로 JWT verifier 생성
                     .verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
-                    .getClaim(ID_CLAIM) // claim(Emial) 가져오기
+                    .getClaim(ID_CLAIM) // claim(id) 가져오기
                     .asString());
         } catch (Exception e) {
             log.error("액세스 토큰이 유효하지 않습니다.");

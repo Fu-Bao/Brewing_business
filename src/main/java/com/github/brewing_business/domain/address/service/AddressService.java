@@ -9,10 +9,12 @@ import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.exception.AppException;
 import com.github.brewing_business.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AddressService {
 
@@ -21,6 +23,7 @@ public class AddressService {
 
     @Transactional
     public ResAddressDto addAddress(AddressDto addressDto, String userId) {
+        log.info("addAddress");
         User user = userRepository.findByUserId(userId).orElseThrow(
                 () -> new AppException(ErrorCode.USER_ID_NOT_FOUND.getMessage(), ErrorCode.USER_ID_NOT_FOUND)
         );
