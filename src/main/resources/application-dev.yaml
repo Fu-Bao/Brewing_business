@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/brewing_business?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mariadb://liquor-business-db.cdi4cweas6u0.ap-northeast-2.rds.amazonaws.com:3306/liquor_business?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
     username: ${DB_USERNAME}
-    password: ${LOCAL_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ${MariaDB_PW}
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     properties:
       hibernate:
@@ -13,11 +13,11 @@ spring:
         use_sql_comments: true
     hibernate:
       ddl-auto: none # validate, create 등 필요에 따라 설정
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MariaDBDialect
     open-in-view: false
   config:
     activate:
-      on-profile: local
+      on-profile: dev
     import:
       - application-jwt.yaml
 springdoc:
