@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    @Operation(summary = "이메일, 비밀번호, 유저네임으로 회원가입을 처리하는 API 엔드포인트")
+    @Operation(summary = "아이디, 비밀번호, 유저네임으로 회원가입을 처리하는 API 엔드포인트")
     public ResponseEntity<?> signup(@RequestBody @Valid SignupDto signupDto, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(ErrorCode.BINDING_RESULT_ERROR.getMessage());
