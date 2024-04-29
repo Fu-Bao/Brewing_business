@@ -22,6 +22,8 @@ public class CustomUserDetailService implements UserDetailsService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_ID_UNMATCHED.getMessage(), ErrorCode.USER_ID_UNMATCHED));
 
+
+
         return new CustomUserDetails(user);
     }
 }

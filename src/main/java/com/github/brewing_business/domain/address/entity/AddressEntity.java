@@ -9,7 +9,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -42,6 +41,7 @@ public class AddressEntity {
                 .address1(addressDto.getAddress1())
                 .address2(addressDto.getAddress2())
                 .phoneNum(addressDto.getPhone_number())
+                .zipcode(addressDto.getZipcode())
                 .isDefault(addressDto.is_default())
                 .build();
     }

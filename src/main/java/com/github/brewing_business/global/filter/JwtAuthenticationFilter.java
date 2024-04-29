@@ -1,8 +1,11 @@
 package com.github.brewing_business.global.filter;
 
 import com.github.brewing_business.domain.auth.entity.CustomUserDetails;
+import com.github.brewing_business.domain.user.entity.Role;
 import com.github.brewing_business.domain.user.entity.User;
 import com.github.brewing_business.domain.user.repository.UserRepository;
+import com.github.brewing_business.exception.AppException;
+import com.github.brewing_business.exception.ErrorCode;
 import com.github.brewing_business.global.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,11 +15,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -85,18 +95,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /*
     [액세스 토큰 체크 & 인증 처리 메소드]
     request에서 extractAccessToken()으로 액세스 토큰 추출 후, isTokenValid()로 유효한 토큰인지 검증
-    유효한 토큰이면, 액세스 토큰에서 extractId로 Id을 추출한 후 findByEmail()로 해당 이메일을 사용하는 유저 객체 반환
+    유효한 토큰이면, 액세스 토큰에서 extractId로 Id을 추출한 후 findByUserId()로 해당 id를 사용하는 유저 객체 반환
     그 유저 객체를 saveAuthentication()으로 인증 처리하여
     인증 허가 처리된 객체를 SecurityContextHolder에 담기
     그 후 다음 인증 필터로 진행
     */
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                   FilterChain filterChain) throws ServletException, IOException {
-        jwtService.extractAccessToken(request)
+
+        Optional<User> user = jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
                 .flatMap(jwtService::extractId)
-                .flatMap(userRepository::findByUserId)
-                .ifPresent(this::saveAuthentication);
+                .flatMap(userRepository::findByUserId);
+
+        user.ifPresent(this::saveAuthentication);;
 
         filterChain.doFilter(request, response);
     }
@@ -106,9 +118,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     해당 유저 객체를 SecurityContextHolder 에 담아 인증 처리를 진행
     */
     public void saveAuthentication(User user) {
-        CustomUserDetails customUserDetails = CustomUserDetails.builder()
-                .userEntity(user)
-                .build();
+
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(customUserDetails, null,
