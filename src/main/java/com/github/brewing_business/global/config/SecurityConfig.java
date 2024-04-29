@@ -5,6 +5,7 @@ import com.github.brewing_business.domain.auth.handler.LoginFailureHandler;
 import com.github.brewing_business.domain.auth.handler.LoginSuccessHandler;
 import com.github.brewing_business.domain.auth.handler.LogoutSuccessHandler;
 import com.github.brewing_business.domain.auth.service.CustomUserDetailService;
+import com.github.brewing_business.domain.user.entity.Role;
 import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.global.filter.CustomUsernamePasswordAuthenticationFilter;
 import com.github.brewing_business.global.filter.JwtAuthenticationFilter;
@@ -60,7 +61,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 접근 권한 설정
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/v1/**").hasAnyRole("user") // v1 경로는 인증된 유저 등급 이상 접근 가능
+                        .requestMatchers("/v1/**").hasAnyRole(Role.USER.getRoleName()) // v1 경로는 인증된 유저 등급 이상 접근 가능
                         .requestMatchers("/v2/**").hasAnyRole("seller") // v2 경로는 판매자 등급 이상 접근 가능
                         .requestMatchers("/v3/**").hasRole("admin") // v3 경로는 관리자만 접근 가능
                         .anyRequest().permitAll())

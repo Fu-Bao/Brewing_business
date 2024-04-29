@@ -2,6 +2,8 @@ package com.github.brewing_business.global.jwt.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.github.brewing_business.domain.user.entity.Role;
 import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.exception.AppException;
 import com.github.brewing_business.exception.ErrorCode;
@@ -38,22 +40,24 @@ public class JwtService {
     private String refreshHeader;
 
     /**
-     * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"으로 설정
+     * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "id"으로 설정
      * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)' 형식
      */
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String ID_CLAIM = "id";
+    private static final String ROLE_CLAIM = "role";
     private static final String BEARER = "Bearer ";
     private final UserRepository userRepository;
 
     // AccessToken 생성
-    public String createAccessToken(String id) {
+    public String createAccessToken(String id, String role) {
         Date now = new Date();
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
                 .withClaim(ID_CLAIM, id)
+                .withClaim(ROLE_CLAIM, role)
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
@@ -117,13 +121,34 @@ public class JwtService {
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
                     .build() // 반환된 빌더로 JWT verifier 생성
                     .verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
-                    .getClaim(ID_CLAIM) // claim(Emial) 가져오기
+                    .getClaim(ID_CLAIM) // claim(id) 가져오기
                     .asString());
         } catch (Exception e) {
-            log.error("액세스 토큰이 유효하지 않습니다.");
+            log.error("id 액세스 토큰이 유효하지 않습니다.");
             return Optional.empty();
         }
     }
+
+    /*
+     * AccessToken에서 id 추출
+     * 추출 전에 JWT.require()로 검증기 생성
+     * verify로 AceessToken 검증 후
+     * 유효하다면 getClaim()으로 role 추출
+     * 유효하지 않다면 빈 Optional 객체 반환
+     */
+//    public Optional<Role> extractRole(String accessToken) {
+//        try {
+//            // 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
+//            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
+//                    .build() // 반환된 빌더로 JWT verifier 생성
+//                    .verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+//                    .getClaim(ROLE_CLAIM)
+//                    .as(Role.class)); // claim(role) 가져오기
+//        } catch (Exception e) {
+//            log.error("role 액세스 토큰이 유효하지 않습니다.");
+//            return Optional.empty();
+//        }
+//    }
 
     // AccessToken 헤더 설정
     public void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
