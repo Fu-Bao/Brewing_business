@@ -17,14 +17,16 @@ create table user
 
 create table address
 (
-    idx          bigint auto_increment
+    idx            bigint auto_increment
         primary key,
-    user_idx     bigint               not null,
-    address1     varchar(100)         not null,
-    address2     varchar(225)         not null,
-    zipcode      varchar(10)          not null,
-    phone_number varchar(30)          not null,
-    is_default   tinyint(1) default 1 not null
+    user_idx       bigint                       not null,
+    receiver       varchar(30)                  not null,
+    rec_phone      varchar(30)                  not null,
+    address_name   varchar(30)                  not null,
+    address        varchar(225)                 not null,
+    address_detail varchar(100)                 null,
+    zipcode        varchar(100) default '00000' not null,
+    is_default     tinyint(1)                   not null
 );
 
 

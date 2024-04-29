@@ -21,7 +21,7 @@ public class AddressController {
 
     // 배송지 등록
     @PostMapping("/v1/address/add")
-    @Operation(summary = "배송지 정보를 저장하는 API 엔드포인트")
+    @Operation(summary = "배송지 정보를 저장하는 API")
     public ResponseEntity<ResAddressDto> addAddress(@RequestBody AddressDto addressDto, @AuthenticationPrincipal CustomUserDetails user) {
         String userId = user.getUsername();
         ResAddressDto address = addressService.addAddress(addressDto, userId);
@@ -31,7 +31,7 @@ public class AddressController {
 
     // 배송지 수정
     @PutMapping("/v1/address/{addressId}/update")
-    @Operation(summary = "배송지 정보를 수정하는 API 엔드포인트")
+    @Operation(summary = "배송지 정보를 수정하는 API")
     public ResponseEntity<ResAddressDto> updateAddress(@PathVariable Long addressId, @RequestBody AddressDto addressDto, @AuthenticationPrincipal CustomUserDetails user) {
         String userId = user.getUsername();
         ResAddressDto address = addressService.updateAddress(addressId, addressDto, userId);

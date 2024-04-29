@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -24,33 +25,44 @@ public class AddressEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    private String address1;
+    private String receiver;
 
-    private String address2;
+    @Column(name = "rec_phone")
+    private String recPhone;
+
+    @Column(name = "address_name")
+    private String addressName;
+
+    private String address;
+
+    @Column(name = "address_detail")
+    private String addressDetail;
 
     private String zipcode;
 
-    @Column(name = "phone_number")
-    private String phoneNum;
-
-    private boolean isDefault;
+    @Column(name = "is_default")
+    private Boolean isDefault;
 
     public static AddressEntity toEntity(User user, AddressDto addressDto) {
         return AddressEntity.builder()
                 .user(user)
-                .address1(addressDto.getAddress1())
-                .address2(addressDto.getAddress2())
-                .phoneNum(addressDto.getPhone_number())
+                .receiver(addressDto.getReceiver())
+                .addressName(addressDto.getAddressName())
+                .address(addressDto.getAddress())
+                .addressDetail(addressDto.getAddressDetail())
+                .recPhone(addressDto.getRecPhone())
                 .zipcode(addressDto.getZipcode())
-                .isDefault(addressDto.is_default())
+                .isDefault(addressDto.getIsDefault())
                 .build();
     }
 
     public void update(AddressDto addressDto) {
-        address1 = addressDto.getAddress1();
-        address2 = addressDto.getAddress2();
-        zipcode = addressDto.getZipcode();
-        phoneNum = addressDto.getPhone_number();
-        isDefault = addressDto.is_default();
+        this.receiver = addressDto.getReceiver();
+        this.addressName = addressDto.getAddressName();
+        this.address = addressDto.getAddress();
+        this.addressDetail = addressDto.getAddressDetail();
+        this.recPhone = addressDto.getRecPhone();
+        this.zipcode = addressDto.getZipcode();
+        this.isDefault = addressDto.getIsDefault();
     }
 }

@@ -23,16 +23,17 @@ public class AddressService {
 
     @Transactional
     public ResAddressDto addAddress(AddressDto addressDto, String userId) {
-        log.info("addAddress");
         User user = userRepository.findByUserId(userId).orElseThrow(
                 () -> new AppException(ErrorCode.USER_ID_NOT_FOUND.getMessage(), ErrorCode.USER_ID_NOT_FOUND)
         );
 
         AddressEntity address = AddressEntity.toEntity(user, addressDto);
 
+        if (addressDto.getIsDefault()) user.setDefaultAddress(address);
+
         addressRepository.save(address);
 
-        return new ResAddressDto("배송지가 등록되었습니다.", user.getUsername(), address.getIdx());
+        return new ResAddressDto("배송지가 등록되었습니다.", user.getUsername(), addressDto);
     }
 
     @Transactional
@@ -45,8 +46,10 @@ public class AddressService {
                 () -> new AppException(ErrorCode.ADDRESS_NOT_FOUND.getMessage(), ErrorCode.ADDRESS_NOT_FOUND)
         );
 
+        if (modifiedAddress.getIsDefault()) user.setDefaultAddress(address);
+
         address.update(modifiedAddress);
 
-        return new ResAddressDto("배송지가 수정되었습니다.", user.getUsername(), address.getIdx());
+        return new ResAddressDto("배송지가 수정되었습니다.", user.getUsername(), modifiedAddress);
     }
 }

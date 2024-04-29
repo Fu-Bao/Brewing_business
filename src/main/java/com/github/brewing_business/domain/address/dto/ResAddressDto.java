@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class ResAddressDto {
     private String message;
     private String username;
-    private Long addressId;
+    private AddressDto address;
 }

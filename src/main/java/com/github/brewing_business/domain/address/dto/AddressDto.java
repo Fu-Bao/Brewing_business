@@ -1,5 +1,6 @@
 package com.github.brewing_business.domain.address.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddressDto {
 
-    private String phone_number;
-    private String address1;
-    private String address2;
+    private String receiver;
+    private String recPhone;
+    private String addressName;
+    private String address;
+    private String addressDetail;
     private String zipcode;
-    private boolean is_default;
+    private Boolean isDefault;
 }
