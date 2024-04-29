@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -17,7 +19,7 @@ public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "idx")
     private Long idx;
 
     @Column(name = "name")
@@ -35,8 +37,18 @@ public class ProductEntity {
     @Column(name = "category")
     private String category;
 
+    @Column(name = "region")
+    private String region;
+
     @Column(name = "star_rating")
     private Double star_rating;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private List<ProductImgEntity> productImgEntitiesList;
+
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.EAGER)
+    private List<ReviewEntity> reviewEntities;
+
 
     public static ProductEntity toEntity(ReqProductDto reqProductDto) {
         return ProductEntity.builder()
