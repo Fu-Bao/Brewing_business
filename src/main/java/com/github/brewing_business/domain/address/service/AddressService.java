@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +22,16 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
+
+    public List<AddressDto> getAddressesByUserId(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(
+                () -> new AppException(ErrorCode.USER_ID_NOT_FOUND.getMessage(), ErrorCode.USER_ID_NOT_FOUND)
+        );
+
+        List<AddressEntity> address = addressRepository.findAllByUser(user);
+
+        return address.stream().map(AddressDto::toAddressDto).toList();
+    }
 
     @Transactional
     public ResAddressDto addAddress(AddressDto addressDto, String userId) {
