@@ -9,24 +9,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private User userEntity;
+    private UserDetails userDetails;
+
+    public CustomUserDetails(User user) {
+        this.userEntity = user;
+        this.userDetails = org.springframework.security.core.userdetails.User.builder()
+                .username(userEntity.getUserId())
+                .password(userEntity.getPassword())
+                .roles(userEntity.getRole().getRoleName())
+                .build();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collect = new ArrayList<>();
-        collect.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return userEntity.getRole().getRoleName();
-            }
-        });
-
-        return collect;
+        return userDetails.getAuthorities();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userEntity.getUsername();
+        return userEntity.getUserId();
     }
 
     @Override
