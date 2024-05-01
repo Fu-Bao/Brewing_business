@@ -78,7 +78,7 @@ public class SecurityConfig {
 
         return http.build();
     }
-
+  
     //AuthenticationManager Bean 등록
     @Bean
     public AuthenticationManager authenticationManager() {
@@ -131,5 +131,4 @@ public class SecurityConfig {
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtService, userRepository);
     }
-
 }
