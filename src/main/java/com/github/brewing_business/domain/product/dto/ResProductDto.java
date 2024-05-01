@@ -27,12 +27,17 @@ public class ResProductDto {
     private List<ReviewEntity> reviewList;
 
 
+
+
     public static ResProductDto toResponse(ProductEntity productEntity) {
         List<String> productImgList = new ArrayList<>();
         List<ReviewEntity> reviewEntityList = new ArrayList<>();
         productImgList = productEntity.getProductImgEntitiesList()
                 .stream()
                 .map(ProductImgEntity::getImgPath).toList();
+
+        reviewEntityList = productEntity.getReviewEntities();
+
         return ResProductDto.builder()
                 .idx(productEntity.getIdx())
                 .name(productEntity.getName())
