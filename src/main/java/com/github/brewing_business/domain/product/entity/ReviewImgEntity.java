@@ -15,6 +15,7 @@ public class ReviewImgEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idx")
+    @JsonIgnore
     private Long idx;
 
     @Column(name = "img_path")

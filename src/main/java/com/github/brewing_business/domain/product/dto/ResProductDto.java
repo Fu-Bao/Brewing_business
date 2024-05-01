@@ -4,6 +4,7 @@ package com.github.brewing_business.domain.product.dto;
 import com.github.brewing_business.domain.product.entity.ProductEntity;
 import com.github.brewing_business.domain.product.entity.ProductImgEntity;
 import com.github.brewing_business.domain.product.entity.ReviewEntity;
+import com.github.brewing_business.domain.product.entity.ReviewImgEntity;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -37,6 +38,11 @@ public class ResProductDto {
                 .map(ProductImgEntity::getImgPath).toList();
 
         reviewEntityList = productEntity.getReviewEntities();
+//        reviewEntityList
+//                .stream()
+//                .map(e->e.getReviewImgEntities())
+//                .map(ReviewImgEntity::getImgPath);
+
 
         return ResProductDto.builder()
                 .idx(productEntity.getIdx())

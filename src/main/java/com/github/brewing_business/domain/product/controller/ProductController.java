@@ -38,17 +38,20 @@ public class  ProductController {
         return ResponseEntity.ok().body(resProductDtoList);
     }
 
-    //상품이름으로 찾기
-    @GetMapping("/v12/product/idx")
-    public ResponseEntity<List<ResProductDto>> productFindNameAll(@RequestParam String idx){
-        List<ResProductDto> resProductDtoList = productService.getAllRegion(idx);
-        return ResponseEntity.ok().body(resProductDtoList);
-    }
     //상품 인덱스 번호로 찾기
     @GetMapping("/v12/product/id")
     public ResponseEntity<List<ResProductDto>> productFindIdAll(@RequestParam Long id){
         List<ResProductDto> resProductDtoList = productService.getAllId(id);
         return ResponseEntity.ok().body(resProductDtoList);
     }
+
+    //제품명으로 찾기
+    @GetMapping("/v12/product/search")
+    public ResponseEntity<List<ResProductDto>> productFindIdAll(@RequestParam String name){
+        List<ResProductDto> resProductDtoList = productService.getSearchName(name);
+        return ResponseEntity.ok().body(resProductDtoList);
+    }
+
+    //
 
 }
