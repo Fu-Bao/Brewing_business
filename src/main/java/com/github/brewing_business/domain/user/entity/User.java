@@ -1,6 +1,7 @@
 package com.github.brewing_business.domain.user.entity;
 
 import com.github.brewing_business.domain.address.entity.AddressEntity;
+import com.github.brewing_business.domain.user.dto.MyProfileDto;
 import com.github.brewing_business.domain.user.dto.SignupDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,6 +31,11 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "profile_img")
+    private String profileImg;
+
+    private String description;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -75,6 +80,7 @@ public class User {
                 .email(signupDto.getEmail())
                 .username(signupDto.getUsername())
                 .password(signupDto.getPassword())
+                .profileImg("default_profile.png")
                 .role(Role.USER)
                 .picu(signupDto.isAgreePICU())
                 .promotion(signupDto.isAgreePromotion())
@@ -87,5 +93,11 @@ public class User {
         for (AddressEntity address : addresses) {
             address.setIsDefault(address.equals(defaultAddress));
         }
+    }
+
+    public void profileUpdate(MyProfileDto myProfileDto) {
+        this.description = myProfileDto.getDescription();
+        this.username = myProfileDto.getUsername();
+        this.profileImg = myProfileDto.getProfile_img();
     }
 }

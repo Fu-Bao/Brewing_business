@@ -17,7 +17,7 @@ public class SignupDto {
     private String password;
 
     @NotBlank(message = "닉네임은 필수 입력 값입니다.")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{4,8}$", message = "닉네임은 특수문자를 제외한 4~8글자여야 합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣\\s]{1,10}$", message = "닉네임은 특수문자를 제외한 4~8글자여야 합니다.")
     private String username;
 
     private boolean agreePICU;
