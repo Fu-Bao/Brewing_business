@@ -41,8 +41,8 @@ public class ProductService {
 
     public List<ResProductDto> getSearchName(String name) {
          List<ProductEntity> products = productRepository.findAllByNameContaining(name)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND.getMessage(), ErrorCode.USER_ID_NOT_FOUND));
-        return products.stream().map(ResProductDto::toResponse).toList();
+                .orElseThrow(() -> new AppException(ErrorCode.USER_EMAIL_NOT_FOUND.getMessage(), ErrorCode.USER_EMAIL_NOT_FOUND));
+        return products.stream().map((product) -> ResProductDto.toResponse(product)).toList();
     }
 
 

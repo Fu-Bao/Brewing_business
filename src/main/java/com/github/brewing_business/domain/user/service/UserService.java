@@ -27,8 +27,8 @@ public class UserService {
         }
 
         // 유저 id 중복 확인
-        if (userRepository.existsByUserId(signupDto.getId())) {
-            throw new AppException(ErrorCode.USER_ID_DUPLICATED.getMessage(), ErrorCode.USER_ID_DUPLICATED);
+        if (userRepository.existsByEmail(signupDto.getEmail())) {
+            throw new AppException(ErrorCode.USER_EMAIL_DUPLICATED.getMessage(), ErrorCode.USER_EMAIL_DUPLICATED);
         }
 
         User user = User.SignupToEntity(signupDto);

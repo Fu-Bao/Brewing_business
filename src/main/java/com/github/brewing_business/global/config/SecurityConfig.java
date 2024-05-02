@@ -62,8 +62,8 @@ public class SecurityConfig {
                 // 접근 권한 설정
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/v1/**").hasAnyRole(Role.USER.getRoleName()) // v1 경로는 인증된 유저 등급 이상 접근 가능
-                        .requestMatchers("/v2/**").hasAnyRole("seller") // v2 경로는 판매자 등급 이상 접근 가능
-                        .requestMatchers("/v3/**").hasRole("admin") // v3 경로는 관리자만 접근 가능
+                        .requestMatchers("/v2/**").hasAnyRole(Role.SELLER.getRoleName()) // v2 경로는 판매자 등급 이상 접근 가능
+                        .requestMatchers("/v3/**").hasRole(Role.ADMIN.getRoleName()) // v3 경로는 관리자만 접근 가능
                         .anyRequest().permitAll())
                 // 로그아웃 설정
                 .logout((logout) -> logout

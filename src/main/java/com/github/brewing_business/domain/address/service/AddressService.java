@@ -23,9 +23,9 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
 
-    public List<AddressDto> getAddressesByUserId(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(
-                () -> new AppException(ErrorCode.USER_ID_NOT_FOUND.getMessage(), ErrorCode.USER_ID_NOT_FOUND)
+    public List<AddressDto> getAddressesByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new AppException(ErrorCode.USER_EMAIL_NOT_FOUND.getMessage(), ErrorCode.USER_EMAIL_NOT_FOUND)
         );
 
         List<AddressEntity> address = addressRepository.findAllByUser(user);
@@ -35,8 +35,8 @@ public class AddressService {
 
     @Transactional
     public ResAddressDto addAddress(AddressDto addressDto, String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(
-                () -> new AppException(ErrorCode.USER_ID_NOT_FOUND.getMessage(), ErrorCode.USER_ID_NOT_FOUND)
+        User user = userRepository.findByEmail(userId).orElseThrow(
+                () -> new AppException(ErrorCode.USER_EMAIL_NOT_FOUND.getMessage(), ErrorCode.USER_EMAIL_NOT_FOUND)
         );
 
         AddressEntity address = AddressEntity.toEntity(user, addressDto);
@@ -49,9 +49,9 @@ public class AddressService {
     }
 
     @Transactional
-    public ResAddressDto updateAddress(Long addressIdx, AddressDto modifiedAddress, String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(
-                () -> new AppException(ErrorCode.USER_ID_NOT_FOUND.getMessage(), ErrorCode.USER_ID_NOT_FOUND)
+    public ResAddressDto updateAddress(Long addressIdx, AddressDto modifiedAddress, String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new AppException(ErrorCode.USER_EMAIL_NOT_FOUND.getMessage(), ErrorCode.USER_EMAIL_NOT_FOUND)
         );
 
         AddressEntity address = addressRepository.findById(addressIdx).orElseThrow(

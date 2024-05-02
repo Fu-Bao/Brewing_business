@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.userEntity = user;
         this.userDetails = org.springframework.security.core.userdetails.User.builder()
-                .username(userEntity.getUserId())
+                .username(userEntity.getEmail())
                 .password(userEntity.getPassword())
                 .roles(userEntity.getRole().getRoleName())
                 .build();
@@ -37,7 +37,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userEntity.getUserId();
+        return userEntity.getEmail();
     }
 
     @Override
