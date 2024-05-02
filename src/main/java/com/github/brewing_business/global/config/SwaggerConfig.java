@@ -2,6 +2,7 @@ package com.github.brewing_business.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -13,7 +14,8 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(title = "양조술사 swagger API 명세서",
                 description = "양조술사 API 명세서",
-                version = "v3"))
+                version = "v3"),
+        servers = {@Server(url = "https://api.yangjo.kr", description = "Default Server URL")})
 @RequiredArgsConstructor
 @Configuration
 public class SwaggerConfig {

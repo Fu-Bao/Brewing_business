@@ -32,7 +32,7 @@ create table address
 
 create table product
 (
-    id          bigint auto_increment
+    idx         bigint auto_increment
         primary key,
     name        varchar(225) not null,
     description varchar(225) not null,
@@ -45,8 +45,26 @@ create table product
 
 create table product_img
 (
-    id         bigint auto_increment
+    idx         bigint auto_increment
         primary key,
-    img_path   varchar(225) charset utf8mb4 not null,
-    product_id bigint                       not null
+    img_path    varchar(225) not null,
+    product_idx bigint       null
+);
+
+create table review
+(
+    idx         bigint auto_increment
+        primary key,
+    product_idx bigint       null,
+    title       varchar(225) null,
+    content     varchar(225) null,
+    star_rating double       null
+);
+
+create table review_img
+(
+    idx        bigint auto_increment
+        primary key,
+    review_idx bigint       null,
+    img_path   varchar(225) null
 );
