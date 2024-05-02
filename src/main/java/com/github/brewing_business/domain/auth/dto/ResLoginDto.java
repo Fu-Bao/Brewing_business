@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResLoginDto {
-    private String userId;
+    private String email;
     private String password;
     private String username;
     private Role role;
@@ -18,7 +18,7 @@ public class ResLoginDto {
     private String refreshToken;
 
     public ResLoginDto(User user) {
-        this.userId = user.getUserId();
+        this.email = user.getEmail();
         this.password = user.getPassword();
         this.username = user.getUsername();
         this.role = user.getRole();

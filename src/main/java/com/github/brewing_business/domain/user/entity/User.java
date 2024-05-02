@@ -23,8 +23,8 @@ public class User {
     @Column(name = "idx")
     private Long idx;
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "username", unique = true)
     private String username;
@@ -72,7 +72,7 @@ public class User {
 
     public static User SignupToEntity(SignupDto signupDto) {
         return User.builder()
-                .userId(signupDto.getId())
+                .email(signupDto.getEmail())
                 .username(signupDto.getUsername())
                 .password(signupDto.getPassword())
                 .role(Role.USER)
