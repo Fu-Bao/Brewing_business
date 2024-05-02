@@ -21,22 +21,22 @@ public class ProductService {
 
     public List<ResProductDto> getAllProducts() {
         List<ProductEntity> products = productRepository.findAll();
-        return products.stream().map((product) -> ResProductDto.toResponse(product)).toList();
+        return products.stream().map(ResProductDto::toResponse).toList();
     }
 
     public List<ResProductDto> getAllCategory(String category) {
         List<ProductEntity> products = productRepository.findAllByCategory(category);
-        return products.stream().map((product) -> ResProductDto.toResponse(product)).toList();
+        return products.stream().map(ResProductDto::toResponse).toList();
     }
 
     public List<ResProductDto> getAllRegion(String region) {
         List<ProductEntity> products = productRepository.findAllByRegion(region);
-        return products.stream().map((product) -> ResProductDto.toResponse(product)).toList();
+        return products.stream().map(ResProductDto::toResponse).toList();
     }
 
     public List<ResProductDto> getAllId(Long id) {
         List<ProductEntity> products = productRepository.findAllByIdx(id);
-        return products.stream().map((product) -> ResProductDto.toResponse(product)).toList();
+        return products.stream().map(ResProductDto::toResponse).toList();
     }
 
     public List<ResProductDto> getSearchName(String name) {

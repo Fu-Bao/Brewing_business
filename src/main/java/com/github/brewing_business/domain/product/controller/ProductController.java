@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "상품 관련 API", description = "상품 관련 api 컨트롤러")
 public class  ProductController {
 
     private final ProductService productService;
