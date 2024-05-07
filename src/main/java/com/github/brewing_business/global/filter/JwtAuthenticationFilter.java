@@ -1,11 +1,8 @@
 package com.github.brewing_business.global.filter;
 
 import com.github.brewing_business.domain.auth.entity.CustomUserDetails;
-import com.github.brewing_business.domain.user.entity.Role;
 import com.github.brewing_business.domain.user.entity.User;
 import com.github.brewing_business.domain.user.repository.UserRepository;
-import com.github.brewing_business.exception.AppException;
-import com.github.brewing_business.exception.ErrorCode;
 import com.github.brewing_business.global.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,18 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor

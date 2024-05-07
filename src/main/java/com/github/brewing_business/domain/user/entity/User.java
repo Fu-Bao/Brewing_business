@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,6 @@ public class User {
     @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name = "password")
     private String password;
 
     @Column(name = "profile_img")
@@ -37,7 +36,6 @@ public class User {
 
     private String description;
 
-    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
