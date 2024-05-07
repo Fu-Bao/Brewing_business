@@ -1,6 +1,7 @@
 package com.github.brewing_business.domain.user.entity;
 
 import com.github.brewing_business.domain.address.entity.AddressEntity;
+import com.github.brewing_business.domain.user.dto.MyProfileDto;
 import com.github.brewing_business.domain.user.dto.SignupDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,27 +13,29 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idx")
     private Long idx;
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
+    @Column(name = "profile_img")
+    private String profileImg;
+
+    private String description;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -59,7 +62,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AddressEntity> addresses = new ArrayList<>();
-
+  
     // 비밀번호 암호화
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
@@ -72,9 +75,10 @@ public class User {
 
     public static User SignupToEntity(SignupDto signupDto) {
         return User.builder()
-                .userId(signupDto.getId())
+                .email(signupDto.getEmail())
                 .username(signupDto.getUsername())
                 .password(signupDto.getPassword())
+                .profileImg("default_profile.png")
                 .role(Role.USER)
                 .picu(signupDto.isAgreePICU())
                 .promotion(signupDto.isAgreePromotion())
@@ -87,5 +91,11 @@ public class User {
         for (AddressEntity address : addresses) {
             address.setIsDefault(address.equals(defaultAddress));
         }
+    }
+
+    public void profileUpdate(MyProfileDto myProfileDto) {
+        this.description = myProfileDto.getDescription();
+        this.username = myProfileDto.getUsername();
+        this.profileImg = myProfileDto.getProfile_img();
     }
 }

@@ -24,9 +24,9 @@ public class AddressController {
     @GetMapping("/v1/address/all")
     @Operation(summary = "유저의 전체 배송지 정보를 확인하는 API")
     public ResponseEntity<List<AddressDto>> getAllAddresses(@AuthenticationPrincipal CustomUserDetails user) {
-        String userId = user.getUsername();
+        String email = user.getUsername();
 
-        List<AddressDto> resAddressDtoList = addressService.getAddressesByUserId(userId);
+        List<AddressDto> resAddressDtoList = addressService.getAddressesByEmail(email);
         return ResponseEntity.ok().body(resAddressDtoList);
     }
 
@@ -34,8 +34,8 @@ public class AddressController {
     @PostMapping("/v1/address/add")
     @Operation(summary = "배송지 정보를 저장하는 API")
     public ResponseEntity<ResAddressDto> addAddress(@RequestBody AddressDto addressDto, @AuthenticationPrincipal CustomUserDetails user) {
-        String userId = user.getUsername();
-        ResAddressDto address = addressService.addAddress(addressDto, userId);
+        String email = user.getUsername();
+        ResAddressDto address = addressService.addAddress(addressDto, email);
 
         return ResponseEntity.ok().body(address);
     }
@@ -44,8 +44,8 @@ public class AddressController {
     @PutMapping("/v1/address/{addressId}/update")
     @Operation(summary = "배송지 정보를 수정하는 API")
     public ResponseEntity<ResAddressDto> updateAddress(@PathVariable Long addressId, @RequestBody AddressDto addressDto, @AuthenticationPrincipal CustomUserDetails user) {
-        String userId = user.getUsername();
-        ResAddressDto address = addressService.updateAddress(addressId, addressDto, userId);
+        String email = user.getUsername();
+        ResAddressDto address = addressService.updateAddress(addressId, addressDto, email);
 
         return ResponseEntity.ok().body(address);
     }

@@ -3,10 +3,12 @@ package com.github.brewing_business.domain.auth.entity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import com.github.brewing_business.domain.user.entity.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -14,20 +16,10 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
 
     private User userEntity;
-    private UserDetails userDetails;
-
-    public CustomUserDetails(User user) {
-        this.userEntity = user;
-        this.userDetails = org.springframework.security.core.userdetails.User.builder()
-                .username(userEntity.getUserId())
-                .password(userEntity.getPassword())
-                .roles(userEntity.getRole().getRoleName())
-                .build();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userDetails.getAuthorities();
+        return List.of(new SimpleGrantedAuthority(userEntity.getRole().getRoleName()));
     }
 
     @Override
@@ -37,7 +29,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userEntity.getUserId();
+        return userEntity.getEmail();
     }
 
     @Override
@@ -57,6 +49,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return userEntity.getDeletedAt() == null;
     }
 }
