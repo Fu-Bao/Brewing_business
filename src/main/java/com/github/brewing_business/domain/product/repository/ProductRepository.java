@@ -11,7 +11,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     List<ProductEntity> findAllByRegion(String region);
 
-    List<ProductEntity> findAllByIdx(Long id);
+    ProductEntity findAllByIdx(Long id);
 
     Optional<List<ProductEntity>> findAllByNameContaining(String name);
 }

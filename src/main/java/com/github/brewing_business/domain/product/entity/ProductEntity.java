@@ -41,7 +41,7 @@ public class ProductEntity {
     private String region;
 
     @Column(name = "star_rating")
-    private Double star_rating;
+    private Double starRating;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ProductImgEntity> productImgEntitiesList;
@@ -57,9 +57,11 @@ public class ProductEntity {
                 .price(reqProductDto.getPrice())
                 .quantity(reqProductDto.getQuantity())
                 .category(reqProductDto.getCategory())
-                .star_rating(0.0)
+                .starRating(0.0)
                 .build();
     }
 
-
+    public void averageStarRating(Double averageStarRating) {
+        this.starRating = averageStarRating;
+    }
 }
