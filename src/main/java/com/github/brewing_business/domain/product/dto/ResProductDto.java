@@ -20,9 +20,6 @@ public class ResProductDto {
     private List<String> productImgList;
     private List<ReviewEntity> reviewList;
 
-
-
-
     public static ResProductDto toResponse(ProductEntity productEntity) {
         List<String> productImgList;
         List<ReviewEntity> reviewEntityList;

@@ -1,5 +1,6 @@
 package com.github.brewing_business.domain.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.brewing_business.domain.product.dto.ReqProductDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,13 +32,11 @@ public class ProductEntity {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "stock")
+    private int stock;
 
-    @Column(name = "category")
     private String category;
 
-    @Column(name = "region")
     private String region;
 
     @Column(name = "star_rating")
@@ -49,15 +48,18 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ReviewEntity> reviewEntities;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+
 
     public static ProductEntity toEntity(ReqProductDto reqProductDto) {
         return ProductEntity.builder()
-                .name(reqProductDto.getProductDto().getName())
-                .description(reqProductDto.getProductDto().getDescription())
-                .price(reqProductDto.getProductDto().getPrice())
-                .quantity(reqProductDto.getProductDto().getQuantity())
-                .category(reqProductDto.getProductDto().getCategory())
-                .region(reqProductDto.getProductDto().getRegion())
+                .name(reqProductDto.getProduct().getName())
+                .description(reqProductDto.getProduct().getDescription())
+                .price(reqProductDto.getProduct().getPrice())
+                .stock(reqProductDto.getProduct().getStock())
+                .category(reqProductDto.getProduct().getCategory())
+                .region(reqProductDto.getProduct().getRegion())
                 .starRating(0.0)
                 .build();
     }

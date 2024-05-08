@@ -14,7 +14,7 @@ public class ProductDto {
     private String name;
     private String description;
     private int price;
-    private int quantity;
+    private int stock;
     private String category;
     private String region;
 
@@ -22,7 +22,7 @@ public class ProductDto {
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
-        this.quantity = product.getQuantity();
+        this.stock = product.getStock();
         this.category = product.getCategory();
         this.region = product.getRegion();
     }

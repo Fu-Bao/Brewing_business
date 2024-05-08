@@ -64,7 +64,8 @@ create table review
     title       varchar(225) null,
     content     varchar(225) null,
     star_rating double       null
-);
+)
+    charset = utf8mb4;
 
 create table review_img
 (
@@ -72,4 +73,14 @@ create table review_img
         primary key,
     review_idx bigint       null,
     img_path   varchar(225) null
+);
+
+create table cart
+(
+    idx         bigint auto_increment
+        primary key,
+    user_idx    bigint not null,
+    product_idx bigint null,
+    price       int    null,
+    count       int    null
 );

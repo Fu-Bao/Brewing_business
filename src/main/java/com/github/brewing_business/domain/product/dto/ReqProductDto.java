@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReqProductDto {
-    private ProductDto productDto;
+    private ProductDto product;
 }
