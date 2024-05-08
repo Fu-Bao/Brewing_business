@@ -1,7 +1,7 @@
 package com.github.brewing_business.domain.address.entity;
 
 import com.github.brewing_business.domain.address.dto.AddressDto;
-import com.github.brewing_business.domain.user.entity.User;
+import com.github.brewing_business.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -23,7 +23,7 @@ public class AddressEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private UserEntity userEntity;
 
     private String receiver;
 
@@ -43,9 +43,9 @@ public class AddressEntity {
     @Column(name = "is_default")
     private Boolean isDefault;
 
-    public static AddressEntity toEntity(User user, AddressDto addressDto) {
+    public static AddressEntity toEntity(UserEntity userEntity, AddressDto addressDto) {
         return AddressEntity.builder()
-                .user(user)
+                .userEntity(userEntity)
                 .receiver(addressDto.getReceiver())
                 .addressName(addressDto.getAddressName())
                 .address(addressDto.getAddress())
