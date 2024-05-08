@@ -5,6 +5,9 @@ import com.github.brewing_business.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -19,11 +22,12 @@ public class CartEntity {
     @JoinColumn(name = "user_idx")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_idx")
-    private ProductEntity product;
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
+    private List<CartProductEntity> cartProductEntityList = new ArrayList<>();
 
-    private Integer price;
-
-    private Integer count;
+    public static CartEntity toCartEntity(UserEntity user) {
+        return CartEntity.builder()
+                .user(user)
+                .build();
+    }
 }

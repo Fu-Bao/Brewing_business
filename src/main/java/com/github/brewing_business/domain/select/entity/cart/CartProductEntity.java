@@ -35,4 +35,17 @@ public class CartProductEntity {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDateTime createAt;
 
+    public static CartProductEntity addFromCartProduct(CartEntity cart, ProductEntity product, Integer price, Integer count) {
+        return CartProductEntity.builder()
+                .cart(cart)
+                .product(product)
+                .price(price)
+                .count(count)
+                .build();
+    }
+
+    public void addCount(Integer count){
+        this.count += count;
+    }
+
 }
