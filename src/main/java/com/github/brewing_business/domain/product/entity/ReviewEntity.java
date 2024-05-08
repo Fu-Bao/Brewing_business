@@ -32,5 +32,5 @@ public class ReviewEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="product_idx")
     @JsonIgnore
-    private ProductEntity productId;
+    private ProductEntity product;
 }

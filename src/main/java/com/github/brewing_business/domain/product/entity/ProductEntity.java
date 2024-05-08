@@ -46,17 +46,18 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ProductImgEntity> productImgEntitiesList;
 
-    @OneToMany(mappedBy = "productEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ReviewEntity> reviewEntities;
 
 
     public static ProductEntity toEntity(ReqProductDto reqProductDto) {
         return ProductEntity.builder()
-                .name(reqProductDto.getName())
-                .description(reqProductDto.getDescription())
-                .price(reqProductDto.getPrice())
-                .quantity(reqProductDto.getQuantity())
-                .category(reqProductDto.getCategory())
+                .name(reqProductDto.getProductDto().getName())
+                .description(reqProductDto.getProductDto().getDescription())
+                .price(reqProductDto.getProductDto().getPrice())
+                .quantity(reqProductDto.getProductDto().getQuantity())
+                .category(reqProductDto.getProductDto().getCategory())
+                .region(reqProductDto.getProductDto().getRegion())
                 .starRating(0.0)
                 .build();
     }

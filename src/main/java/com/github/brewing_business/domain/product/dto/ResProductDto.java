@@ -4,10 +4,8 @@ package com.github.brewing_business.domain.product.dto;
 import com.github.brewing_business.domain.product.entity.ProductEntity;
 import com.github.brewing_business.domain.product.entity.ProductImgEntity;
 import com.github.brewing_business.domain.product.entity.ReviewEntity;
-import com.github.brewing_business.domain.product.entity.ReviewImgEntity;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,12 +15,7 @@ import java.util.List;
 @Builder
 public class ResProductDto {
     private Long idx;
-    private String name;
-    private String description;
-    private int price;
-    private int quantity;
-    private String category;
-    private String region;
+    private ProductDto productDto;
     private Double star_rating;
     private List<String> productImgList;
     private List<ReviewEntity> reviewList;
@@ -31,28 +24,21 @@ public class ResProductDto {
 
 
     public static ResProductDto toResponse(ProductEntity productEntity) {
-        List<String> productImgList = new ArrayList<>();
-        List<ReviewEntity> reviewEntityList = new ArrayList<>();
+        List<String> productImgList;
+        List<ReviewEntity> reviewEntityList;
+
         productImgList = productEntity.getProductImgEntitiesList()
                 .stream()
                 .map(ProductImgEntity::getImgPath).toList();
 
         reviewEntityList = productEntity.getReviewEntities();
-//        reviewEntityList
-//                .stream()
-//                .map(e->e.getReviewImgEntities())
-//                .map(ReviewImgEntity::getImgPath);
 
+        ProductDto product = new ProductDto(productEntity);
 
         return ResProductDto.builder()
                 .idx(productEntity.getIdx())
-                .name(productEntity.getName())
-                .description(productEntity.getDescription())
-                .price(productEntity.getPrice())
-                .quantity(productEntity.getQuantity())
-                .category(productEntity.getCategory())
-                .region(productEntity.getRegion())
-                .star_rating(productEntity.getStar_rating())
+                .productDto(product)
+                .star_rating(productEntity.getStarRating())
                 .productImgList(productImgList)
                 .reviewList(reviewEntityList)
                 .build();
