@@ -23,7 +23,7 @@ public class AddressEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private UserEntity userEntity;
+    private UserEntity user;
 
     private String receiver;
 
@@ -45,7 +45,7 @@ public class AddressEntity {
 
     public static AddressEntity toEntity(UserEntity userEntity, AddressDto addressDto) {
         return AddressEntity.builder()
-                .userEntity(userEntity)
+                .user(userEntity)
                 .receiver(addressDto.getReceiver())
                 .addressName(addressDto.getAddressName())
                 .address(addressDto.getAddress())

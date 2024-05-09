@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://db-brewing.c7gww880ehfg.ap-northeast-2.rds.amazonaws.com:3306/brewing_business?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mariadb://${DB_HOST}:3306/brewing_business?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
     username: ${DB_USERNAME}
     password: ${MariaDB_PW}
     driver-class-name: org.mariadb.jdbc.Driver

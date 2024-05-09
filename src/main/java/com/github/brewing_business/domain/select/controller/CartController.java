@@ -3,6 +3,8 @@ package com.github.brewing_business.domain.select.controller;
 import com.github.brewing_business.domain.auth.entity.CustomUserDetails;
 import com.github.brewing_business.domain.select.dto.ReqCartProductDto;
 import com.github.brewing_business.domain.select.service.CartService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,13 +22,15 @@ import java.util.List;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
+@Tag(name = "장바구니 관련 API", description = "장바구니 관련 api 컨트롤러")
 public class CartController {
 
     private final CartService cartService;
 
     // 장바구니에 담기
     @PostMapping("/cart")
-    public ResponseEntity<?> addToCart(
+    @Operation(summary = "유저가 장바구니에 상품을 담는 API")
+    public ResponseEntity<?> addCart(
             @Valid @RequestBody ReqCartProductDto cartItemRequestDto,
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             BindingResult bindingResult){
@@ -44,7 +48,6 @@ public class CartController {
         }
 
         String email = customUserDetails.getUsername();
-
 
         try {
             cartService.addCart(cartItemRequestDto, email);

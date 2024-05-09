@@ -1,6 +1,5 @@
 package com.github.brewing_business.domain.product.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.brewing_business.domain.product.dto.ReqProductDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,10 +46,6 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ReviewEntity> reviewEntities;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-
 
     public static ProductEntity toEntity(ReqProductDto reqProductDto) {
         return ProductEntity.builder()
