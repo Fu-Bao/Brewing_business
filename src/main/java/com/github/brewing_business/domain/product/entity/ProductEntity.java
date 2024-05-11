@@ -31,35 +31,35 @@ public class ProductEntity {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "stock")
+    private int stock;
 
-    @Column(name = "category")
     private String category;
 
-    @Column(name = "region")
     private String region;
 
     @Column(name = "star_rating")
-    private Double star_rating;
+    private Double starRating;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ProductImgEntity> productImgEntitiesList;
 
-    @OneToMany(mappedBy = "productEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ReviewEntity> reviewEntities;
-
 
     public static ProductEntity toEntity(ReqProductDto reqProductDto) {
         return ProductEntity.builder()
-                .name(reqProductDto.getName())
-                .description(reqProductDto.getDescription())
-                .price(reqProductDto.getPrice())
-                .quantity(reqProductDto.getQuantity())
-                .category(reqProductDto.getCategory())
-                .star_rating(0.0)
+                .name(reqProductDto.getProduct().getName())
+                .description(reqProductDto.getProduct().getDescription())
+                .price(reqProductDto.getProduct().getPrice())
+                .stock(reqProductDto.getProduct().getStock())
+                .category(reqProductDto.getProduct().getCategory())
+                .region(reqProductDto.getProduct().getRegion())
+                .starRating(0.0)
                 .build();
     }
 
-
+    public void averageStarRating(Double averageStarRating) {
+        this.starRating = averageStarRating;
+    }
 }

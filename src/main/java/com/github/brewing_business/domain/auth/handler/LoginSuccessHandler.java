@@ -1,7 +1,7 @@
 package com.github.brewing_business.domain.auth.handler;
 
 
-import com.github.brewing_business.domain.user.entity.User;
+import com.github.brewing_business.domain.user.entity.UserEntity;
 import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.exception.AppException;
 import com.github.brewing_business.exception.ErrorCode;
@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-
-import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,17 +29,17 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
         String email = extractUsername(authentication); // 인증 정보에서 Username(id) 추출
-        User user = userRepository.findByEmail(email).orElseThrow(
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
                 () -> new AppException(ErrorCode.USER_EMAIL_NOT_FOUND.getMessage(), ErrorCode.USER_EMAIL_NOT_FOUND)
         );
 
-        String accessToken = jwtService.createAccessToken(email, user.getRole().getRoleName()); // JwtService의 createAccessToken을 사용하여 AccessToken 발급
+        String accessToken = jwtService.createAccessToken(email, userEntity.getRole().getRoleName()); // JwtService의 createAccessToken을 사용하여 AccessToken 발급
         String refreshToken = jwtService.createRefreshToken(); // JwtService의 createRefreshToken을 사용하여 RefreshToken 발급
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken); // 응답 헤더에 AccessToken, RefreshToken 실어서 응답
 
-        user.initRefreshToken(refreshToken);
-        userRepository.saveAndFlush(user);
+        userEntity.initRefreshToken(refreshToken);
+        userRepository.saveAndFlush(userEntity);
 
         log.info("로그인에 성공하였습니다. email : {}", email);
         log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);

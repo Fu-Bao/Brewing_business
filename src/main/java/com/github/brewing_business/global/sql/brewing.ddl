@@ -1,11 +1,13 @@
-create table user
+create table users
 (
     idx             bigint auto_increment
         primary key,
-    user_id         varchar(50)  not null,
+    email           varchar(100) not null,
     password        varchar(255) not null,
     role            varchar(30)  not null,
     username        varchar(255) null,
+    profile_img     varchar(225) null,
+    description     varchar(225) null,
     refresh_token   varchar(225) null,
     company         varchar(225) null,
     business_number varchar(50)  null,
@@ -35,13 +37,16 @@ create table product
     idx         bigint auto_increment
         primary key,
     name        varchar(225) not null,
-    description varchar(225) not null,
+    description longtext     not null,
     price       int          not null,
     quantity    int          not null,
     category    varchar(50)  not null,
     region      varchar(50)  null,
     star_rating double       null
-);
+)
+    charset = utf8mb4;
+
+
 
 create table product_img
 (
@@ -59,7 +64,8 @@ create table review
     title       varchar(225) null,
     content     varchar(225) null,
     star_rating double       null
-);
+)
+    charset = utf8mb4;
 
 create table review_img
 (
@@ -67,4 +73,14 @@ create table review_img
         primary key,
     review_idx bigint       null,
     img_path   varchar(225) null
+);
+
+create table cart
+(
+    idx         bigint auto_increment
+        primary key,
+    user_idx    bigint not null,
+    product_idx bigint null,
+    price       int    null,
+    count       int    null
 );

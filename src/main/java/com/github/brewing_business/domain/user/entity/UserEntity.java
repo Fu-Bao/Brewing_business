@@ -17,16 +17,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class UserEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idx")
     private Long idx;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "username", unique = true)
+    @Column(unique = true)
     private String username;
 
     private String password;
@@ -39,7 +38,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "company")
     private String company;
 
     @Column(name = "business_number")
@@ -73,8 +71,8 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public static User SignupToEntity(SignupDto signupDto) {
-        return User.builder()
+    public static UserEntity SignupToEntity(SignupDto signupDto) {
+        return UserEntity.builder()
                 .email(signupDto.getEmail())
                 .username(signupDto.getUsername())
                 .password(signupDto.getPassword())

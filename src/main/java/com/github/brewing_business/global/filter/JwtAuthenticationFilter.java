@@ -1,7 +1,7 @@
 package com.github.brewing_business.global.filter;
 
 import com.github.brewing_business.domain.auth.entity.CustomUserDetails;
-import com.github.brewing_business.domain.user.entity.User;
+import com.github.brewing_business.domain.user.entity.UserEntity;
 import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.global.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -77,10 +77,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     jwtService.createRefreshToken()으로 리프레시 토큰 재발급 후
     DB에 재발급한 리프레시 토큰 업데이트 후 Flush
     */
-    private String reIssueRefreshToken(User user) {
+    private String reIssueRefreshToken(UserEntity userEntity) {
         String reIssuedRefreshToken = jwtService.createRefreshToken();
-        user.initRefreshToken(reIssuedRefreshToken);
-        userRepository.saveAndFlush(user);
+        userEntity.initRefreshToken(reIssuedRefreshToken);
+        userRepository.saveAndFlush(userEntity);
         return reIssuedRefreshToken;
     }
 
@@ -95,7 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                   FilterChain filterChain) throws ServletException, IOException {
 
-        Optional<User> user = jwtService.extractAccessToken(request)
+        Optional<UserEntity> user = jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
                 .flatMap(jwtService::extractId)
                 .flatMap(userRepository::findByEmail);
@@ -109,9 +109,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     UserDetails 의 User를 Builder로 생성 후 해당 객체를 인증 처리하여
     해당 유저 객체를 SecurityContextHolder 에 담아 인증 처리를 진행
     */
-    public void saveAuthentication(User user) {
+    public void saveAuthentication(UserEntity userEntity) {
 
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(customUserDetails, null,

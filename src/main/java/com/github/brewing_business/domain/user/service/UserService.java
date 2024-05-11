@@ -3,7 +3,7 @@ package com.github.brewing_business.domain.user.service;
 import com.github.brewing_business.domain.user.dto.MyProfileDto;
 import com.github.brewing_business.domain.user.dto.ResProfileDto;
 import com.github.brewing_business.domain.user.dto.SignupDto;
-import com.github.brewing_business.domain.user.entity.User;
+import com.github.brewing_business.domain.user.entity.UserEntity;
 import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.exception.AppException;
 import com.github.brewing_business.exception.ErrorCode;
@@ -32,11 +32,11 @@ public class UserService {
             throw new AppException(ErrorCode.USER_EMAIL_DUPLICATED.getMessage(), ErrorCode.USER_EMAIL_DUPLICATED);
         }
 
-        User user = User.SignupToEntity(signupDto);
+        UserEntity userEntity = UserEntity.SignupToEntity(signupDto);
 
-        user.passwordEncode(bCryptPasswordEncoder);
+        userEntity.passwordEncode(bCryptPasswordEncoder);
 
-        userRepository.save(user);
+        userRepository.save(userEntity);
     }
 
     // 사업자 등록
@@ -46,20 +46,20 @@ public class UserService {
     }
 
     public MyProfileDto getMyPage(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_FOUND.getMessage(), ErrorCode.USER_NOT_FOUND)
         );
 
-        return MyProfileDto.toMyPageMainDto(user);
+        return MyProfileDto.toMyPageMainDto(userEntity);
     }
 
     @Transactional
     public ResProfileDto updateMyProfile(String email, MyProfileDto myProfileDto) {
-        User user = userRepository.findByEmail(email).orElseThrow(
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_FOUND.getMessage(), ErrorCode.USER_NOT_FOUND)
         );
 
-        user.profileUpdate(myProfileDto);
+        userEntity.profileUpdate(myProfileDto);
         return new ResProfileDto("프로필 수정 완료", myProfileDto);
     }
 }

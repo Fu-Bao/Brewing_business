@@ -2,11 +2,10 @@ package com.github.brewing_business.domain.auth.entity;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import com.github.brewing_business.domain.user.entity.User;
+import com.github.brewing_business.domain.user.entity.UserEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private User userEntity;
+    private UserEntity userEntity;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

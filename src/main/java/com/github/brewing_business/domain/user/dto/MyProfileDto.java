@@ -1,6 +1,6 @@
 package com.github.brewing_business.domain.user.dto;
 
-import com.github.brewing_business.domain.user.entity.User;
+import com.github.brewing_business.domain.user.entity.UserEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -24,11 +24,11 @@ public class MyProfileDto {
     private String description;
     // 내 활동 관련 필드 추가 예정
 
-    public static MyProfileDto toMyPageMainDto(User user) {
+    public static MyProfileDto toMyPageMainDto(UserEntity userEntity) {
         return MyProfileDto.builder()
-                .profile_img(user.getProfileImg())
-                .username(user.getUsername())
-                .description(user.getDescription())
+                .profile_img(userEntity.getProfileImg())
+                .username(userEntity.getUsername())
+                .description(userEntity.getDescription())
                 .build();
     }
 }

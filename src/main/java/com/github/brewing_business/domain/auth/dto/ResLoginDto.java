@@ -1,7 +1,7 @@
 package com.github.brewing_business.domain.auth.dto;
 
 import com.github.brewing_business.domain.user.entity.Role;
-import com.github.brewing_business.domain.user.entity.User;
+import com.github.brewing_business.domain.user.entity.UserEntity;
 import lombok.*;
 
 @Getter
@@ -17,11 +17,11 @@ public class ResLoginDto {
     private String accessToken;
     private String refreshToken;
 
-    public ResLoginDto(User user) {
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.username = user.getUsername();
-        this.role = user.getRole();
+    public ResLoginDto(UserEntity userEntity) {
+        this.email = userEntity.getEmail();
+        this.password = userEntity.getPassword();
+        this.username = userEntity.getUsername();
+        this.role = userEntity.getRole();
     }
 
 }

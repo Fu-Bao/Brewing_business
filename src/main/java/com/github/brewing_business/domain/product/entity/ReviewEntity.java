@@ -14,28 +14,23 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "review")
 public class ReviewEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idx")
     private Long idx;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
     private String content;
 
     @Column(name = "star_rating")
-    private Double star_rating;
+    private Double starRating;
 
     @OneToMany(mappedBy = "reviewEntity", fetch = FetchType.EAGER)
     private List<ReviewImgEntity> reviewImgEntities;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="product_idx")
     @JsonIgnore
-    private ProductEntity productEntity;
-
-
+    private ProductEntity product;
 }
