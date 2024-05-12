@@ -8,6 +8,7 @@ import com.github.brewing_business.domain.auth.service.CustomUserDetailService;
 import com.github.brewing_business.domain.user.repository.UserRepository;
 import com.github.brewing_business.global.filter.CustomUsernamePasswordAuthenticationFilter;
 import com.github.brewing_business.global.filter.JwtAuthenticationFilter;
+import com.github.brewing_business.global.filter.LoginFilter;
 import com.github.brewing_business.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,6 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import java.util.Collection;
@@ -73,13 +74,14 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                 );
 
+        http.addFilterAt(new LoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(customUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
   
-    //AuthenticationManager Bean 등록
+    // AuthenticationManager Bean 등록
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
